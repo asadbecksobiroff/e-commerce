@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "EasySHOP - O'zbekistonning yetakchi elektron do'koni";
+}
+
+<div class="hero-carousel">
+    <img id="carousel-image" class="carousel-image" src="~/images/banner/laptops.jpg" alt="Mahsulotlar">
+    <div class="carousel-nav" id="carousel-nav"></div>
+</div>
+
+<h2 style="margin-bottom: 20px; color: var(--dark); font-size: 24px;">Kategoriyalar</h2>
+
+<div class="products-grid">
+    <div class="product-card" data-category="telefonlar" onclick="location.href='@Url.Action("phone", "Category")'">
+        <img src="~/images/category/phone.jpg" alt="Telefonlar" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Elektronika</div>
+            <h3>Telefonlar</h3>
+        </div>
+    </div>
+
+    <div class="product-card" data-category="kompyuterlar" onclick="location.href='@Url.Action("laptop", "Category")'">
+        <img src="~/images/banner/laptops.jpg" alt="Kompyuterlar" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Elektronika</div>
+            <h3>Kompyuterlar</h3>
+        </div>
+    </div>
+
+    <div class="product-card" data-category="kiyim-kechaklar" onclick="location.href='@Url.Action("clothes", "Category")'">
+        <img src="~/images/banner/shoes.jpg" alt="Kiyim-kechaklar" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Moda</div>
+            <h3>Kiyim-kechaklar</h3>
+        </div>
+    </div>
+
+    <div class="product-card" data-category="soatlar" onclick="location.href='@Url.Action("watch", "Category")'">
+        <img src="~/images/category/watch.webp" alt="Soatlar" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Aksessuarlar</div>
+            <h3>Soatlar</h3>
+        </div>
+    </div>
+
+    <div class="product-card" data-category="oziq-ovqatlar" onclick="location.href='@Url.Action("food", "Category")'">
+        <img src="~/images/category/food.webp" alt="Oziq-ovqatlar" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Oziq-ovqat</div>
+            <h3>Oziq-ovqatlar</h3>
+        </div>
+    </div>
+
+    <div class="product-card" data-category="uy_anjomlari" onclick="location.href='@Url.Action("home", "Category")'">
+        <img src="~/images/category/home.webp" alt="Uy anjomlari" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Uy jihozlari</div>
+            <h3>Uy anjomlari</h3>
+        </div>
+    </div>
+
+    <div class="product-card" data-category="kitoblar" onclick="location.href='@Url.Action("book", "Category")'">
+        <img src="~/images/category/book.jpg" alt="Kitoblar" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Kitoblar</div>
+            <h3>Kitoblar</h3>
+        </div>
+    </div>
+
+    <div class="product-card" data-category="maishiy_texnika" onclick="location.href='@Url.Action("tech", "Category")'">
+        <img src="~/images/category/tech.jpg" alt="Maishiy texnika" class="product-image">
+        <div class="product-info">
+            <div class="product-category">Maishiy texnika</div>
+            <h3>Maishiy texnika</h3>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,149 @@
+﻿@model List<CartItem>
+
+@{
+    ViewData["Title"] = "Savatcham";
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        #map {
+            height: 400px;
+            width: 400px;
+        }
+    </style>
+}
+
+<h2>Savatchangiz</h2>
+
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mahsulot</th>
+                <th>Narx</th>
+                <th>Soni</th>
+                <th>Jami</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price.ToString("N0")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("N0")</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-outline-dark" onclick="removeToCartReload(@item.Product.Id, @item.Quantity)">-</button>
+                            <div class="btn btn-outline-dark" style="background: #fff;">@item.Quantity</div>
+                            <button type="button" class="btn btn-outline-dark" onclick="addToCartOneReload(@item.Product.Id, @item.Product.Available, @item.Quantity)">+</button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" onclick="removeFromCartReload(@item.Product.Id)"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Umumiy narx: @Model.Sum(i => i.Price).ToString("N0")</h4>
+    <form asp-action="PlaceOrder" method="post">
+        @Html.AntiForgeryToken()
+        <div class="mt-3">
+            <label for="payment">To'lov turi</label> <br/>
+            <input type="radio" id="card" name="payment" value="card" required />
+            <label for="card">Karta</label> <br/>
+            <input type="radio" id="cash" name="payment" value="cash" required />
+            <label for="cash">Naqd pulda</label> <br/>
+        </div>
+        <div class="mt-3">
+            <label for="location">Yetkazish manzili</label>
+            <div id="map"></div>
+            <input type="hidden" name="location" id="location" required>
+            <button type="button" class="btn btn-secondary mt-2" onclick="getLocation()">📍 Joylashuvni aniqlash</button>
+        </div>
+        <button type="submit" class="btn btn-success mt-3">Buyurtma berish</button>
+    </form>
+}
+
+
+<div class="payment" id="payment">
+    <div class="box">
+        <h4>Karta ma'lumotlarini kiriting</h4>
+        <input id="ccn" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}"
+               maxlength="19" placeholder="xxxx xxxx xxxx xxxx">
+        <input type="text" placeholder="00/00" />
+        <button class="btn btn-primary" onclick="back()">Tasdiqlash</button>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    var map = L.map('map').setView([41.3111, 69.2797], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+    }).addTo(map);
+
+    var marker;
+
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        marker = L.marker([lat, lng]).addTo(map);
+
+        document.getElementById('location').value = `${lat}, ${lng}`;
+    });
+
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude.toFixed(6);
+                const lon = position.coords.longitude.toFixed(6);
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                marker = L.marker([lat, lon]).addTo(map);
+                map.setView([lat, lon], 15);
+                document.getElementById('location').value = `${lat}, ${lon}`;
+            }, function(error) {
+                alert("Joylashuvni olishda xatolik yuz berdi: " + error.message);
+            });
+        } else {
+            alert("Brauzeringiz joylashuvni qo‘llab-quvvatlamaydi.");
+        }
+    }
+</script>
+
+<script src="~/js/cart.js" asp-append-version="true"></script>
+@section Scripts {
+    <script>
+        const cash = document.getElementById('card');
+        const payment = document.getElementById('payment');
+        cash.addEventListener("click", function(){
+            payment.style.display = 'block';
+            // document.body.style.overflow = 'hidden';
+        });
+
+        function back() {
+            payment.style.display = 'none';
+        }
+    </script>
+}

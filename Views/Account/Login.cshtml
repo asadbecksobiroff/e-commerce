@@ -1,0 +1,39 @@
+﻿@model easy_shop.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Kirish";
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+}
+
+<div class="form">
+    <h2>Kirish</h2>
+
+    <form asp-action="Login" method="post">
+        <div>
+            <label asp-for="Email" class="form-label mt-4"></label>
+            <input asp-for="Email" class="form-control" placeholder="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password" class="form-label mt-4">Parol</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Parol" />
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div class="mt-4">
+            <label asp-for="RememberMe" class="form-label">Eslab qolish</label>
+            <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3 mb-3" style="width: 100%;">Kirish</button>
+    </form>
+
+    <div>
+        Akaunt yo'qmi? <a asp-action="Register">Ro'yhatdan o'tish</a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

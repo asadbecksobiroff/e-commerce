@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Mahsulotlar ro‘yxati";
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+}
+
+<h2>Mahsulotlar ro‘yxati</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Rasm</th>
+            <th>Nomi</th>
+            <th>Narxi</th>
+            <th>Mavjud</th>
+            <th>Kategoriya</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                    {
+                        <img src="@product.ImageUrl" width="80" height="80" />
+                    }
+                    else
+                    {
+                        <span>Rasm yo‘q</span>
+                    }
+                </td>
+                <td>@product.Name</td>
+                <td>@String.Format("{0:N0}", product.Price) so‘m</td>
+                <td>
+                    <form asp-controller="Admin" asp-action="UpdateAvailable" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@product.Id" />
+                        <input type="text" name="available" value="@product.Available" style="width: 70px" required/>
+                        <button type="submit" class="btn btn-primary">⟳</button>
+                    </form>
+                </td>
+                <td>@product.Category</td>
+                <td><button class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Admin")/@product.Id'"><i class="fa-solid fa-trash"></i></button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-primary" href="@Url.Action("AddProduct", "Admin")">+ Yangi mahsulot qo‘shish</a>
+
+<script>
+    function update_available() {
+        var a = document.getElementById('available').value;
+        alert(a);
+    }
+</script>
